@@ -2,8 +2,9 @@ from asyncio import tasks
 import streamlit as st
 import time, json
 import pandas as pd
-rtasks =  r"configurations\tasks.json"
-rsafety = r"configurations\safety.json"
+import os
+rtasks =  os.path.join(os.path.dirname(__file__),'configurations', 'tasks.json')
+rsafety = os.path.join(os.path.dirname(__file__),'configurations', 'safety.json')
 ready = False
 job_name = ""
 job_description = ""
