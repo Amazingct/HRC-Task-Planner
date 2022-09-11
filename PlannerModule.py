@@ -74,6 +74,8 @@ class Tasks:
             """)
             cols = st.columns(2)
             _cols = st.columns(2)
+
+
             cols[0].write(self.repair)
             cols[1].write(self.inspect)
             _cols[0].write(self.robot_can)
@@ -148,6 +150,10 @@ class Plan:
         self.job_type = job_type
         self.n_assigned_to_robot = 4
         self.n_assigned_to_human = 6
+        self.assignment = pd.DataFrame([
+            ["CLIMB", "STOP"],
+            [None, "FETCH"]
+            ], columns=['ROBOT', 'HUMAN'])
 
     
 
@@ -155,11 +161,16 @@ class Plan:
 
     def render(self):
         tab = st.columns(4)
-
         tab[0].title(self.name)
-        tab[1].metric("Assigned to Robot", self.n_assigned_to_robot,)
-        tab[2].metric("Assigned to Human", self.n_assigned_to_human)
-        tab[3].markdown(self.description)
+        if len(self.job_type) == 1:
+            tab[1].write(self.job_type[0])
+        else:
+            tab[1].write(self.job_type[0]  + "AND" + self.job_type[1])
+        tab[2].metric("Assigned to Robot", self.n_assigned_to_robot,)
+        tab[3].metric("Assigned to Human", self.n_assigned_to_human)
+
+
+        st.write(self.assignment)
 
 def display_loading(message):
     progress = st.empty()
