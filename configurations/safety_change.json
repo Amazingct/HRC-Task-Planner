@@ -1,0 +1,20 @@
+{
+    "safe_tasks": [
+        "START OF INSPECTION JOB"
+    
+    ],
+    "safe_locations": [
+        "ACCESS WAYS "
+
+    ],
+    "unsafe_tasks": [
+        "GAS CHECK[TANK] ",
+        "CLIMB",
+        
+        "INTERNAL VACCUUM TESTING"
+    ],
+    "unsafe_locations": [
+        "STEAM LINE"
+     
+    ]
+}
