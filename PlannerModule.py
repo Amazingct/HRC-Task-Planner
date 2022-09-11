@@ -2,7 +2,9 @@ import streamlit as st
 import time, json
 import pandas as pd
 import os
-import matplotlib as plt
+import numpy as np
+import matplotlib.pyplot as plt
+
 rtasks =  os.path.join(os.path.dirname(__file__),'configurations', 'tasks.json')
 rsafety = os.path.join(os.path.dirname(__file__),'configurations', 'safety.json')
 ready = False
@@ -186,10 +188,10 @@ class Plan:
             plt.bar(courses, values, color ='maroon',
                     width = 0.4)
  
-plt.xlabel("Courses offered")
-plt.ylabel("No. of students enrolled")
-plt.title("Students enrolled in different courses")
-plt.show()
+            plt.xlabel("Courses offered")
+            plt.ylabel("No. of students enrolled")
+            plt.title("Students enrolled in different courses")
+            plt.show()
 
 
 
