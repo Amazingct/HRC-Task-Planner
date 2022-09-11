@@ -188,9 +188,9 @@ class Plan:
             plt.bar(courses, values, color ='maroon',
                     width = 0.4)
  
-            plt.xlabel("Courses offered")
-            plt.ylabel("No. of students enrolled")
-            plt.title("Students enrolled in different courses")
+            plt.xlabel("TASKS ASSIGNMENT")
+            plt.ylabel("NUMBER OF TASK ASSIGNED")
+            plt.title("DISTRIBUTION")
             st.pyplot(fig)
 
 
