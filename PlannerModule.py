@@ -191,7 +191,7 @@ class Plan:
             plt.xlabel("Courses offered")
             plt.ylabel("No. of students enrolled")
             plt.title("Students enrolled in different courses")
-            plt.show()
+            st.plotly_chart(fig)
 
 
 
