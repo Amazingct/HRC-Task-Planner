@@ -3,6 +3,7 @@ import streamlit as st
 import time, json
 import pandas as pd
 import os
+import matplotlib as plt
 rtasks =  os.path.join(os.path.dirname(__file__),'configurations', 'tasks.json')
 rsafety = os.path.join(os.path.dirname(__file__),'configurations', 'safety.json')
 ready = False
@@ -156,6 +157,8 @@ class Plan:
             [None, "FETCH"]
             ], columns=['ROBOT', 'HUMAN'])
 
+        
+
     
 
 
@@ -170,8 +173,26 @@ class Plan:
         tab[2].metric("Assigned to Robot", self.n_assigned_to_robot,)
         tab[3].metric("Assigned to Human", self.n_assigned_to_human)
 
+        cols = st.columns(2)
+        cols[0].write(self.assignment)
 
-        st.write(self.assignment)
+        with cols[1] as col:
+            data = {'ROBOT':20, 'HUMAN':15}
+            courses = list(data.keys())
+            values = list(data.values())
+            
+            fig = plt.figure(figsize = (10, 5))
+            
+            # creating the bar plot
+            plt.bar(courses, values, color ='maroon',
+                    width = 0.4)
+ 
+plt.xlabel("Courses offered")
+plt.ylabel("No. of students enrolled")
+plt.title("Students enrolled in different courses")
+plt.show()
+
+
 
 def display_loading(message):
     progress = st.empty()
