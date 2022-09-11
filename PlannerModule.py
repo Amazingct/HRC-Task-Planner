@@ -2,8 +2,8 @@ from asyncio import tasks
 import streamlit as st
 import time, json
 import pandas as pd
-rtasks =  r"E:\Projects\HRC Task Planner\configurations\tasks.json"
-rsafety = r"E:\Projects\HRC Task Planner\configurations\safety.json"
+rtasks =  r"configurations\tasks.json"
+rsafety = r"configurations\safety.json"
 ready = False
 job_name = ""
 job_description = ""
