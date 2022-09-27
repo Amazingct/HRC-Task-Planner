@@ -9,11 +9,8 @@ for criteria in all_criteria:
     criteria(cr.actions_dict)
     print("APPLYING CRITERIA: ", criteria.__name__)
     print(cr.result)
+result1, result2 = cr.result_sorting(cr.result, var)
+
 
  
-# import json
 
-# s = '[4,4,7,8]'
-
-# l = json.loads(s)
-# print(type(l))
