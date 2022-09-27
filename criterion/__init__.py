@@ -1,14 +1,13 @@
 from platform import java_ver
 import pandas as pd
 import numpy as np
-
+import json
 actions = []
 human = {}
 robot = {}
 collab = {}
 safe = {}
 actions_dict  = {}
-
 for_human = []
 safe_tasks = []
 unsafe_tasks = []
@@ -36,8 +35,8 @@ def collect_data(safety, tasks, job_type):
     global actions_dict, safe_tasks, unsafe_tasks, for_human, safe_locations, unsafe_locations, actions
 
     
-    safety = pd.read_excel(safety, engine='openpyxl')
-    task = pd.read_excel(tasks, engine='openpyxl')
+    safety = pd.read_excel(safety)
+    task = pd.read_excel(tasks)
     safety.set_index("type", inplace = True)
     task.set_index("type", inplace = True)
     safe_tasks = []
@@ -192,54 +191,74 @@ def third_criteria(task_list):
         del(task_list[i])
 
 def fourth_criteria(task_list):
-    colaborative = {}
     to_be_removed = []
-    for h,i in task_list.items():
-        val = capture(i + " IS THE TASK COLLABORATIVE 1 for YES, 2 for NO")
-        if val == "1":
-            colaborative.update({h:i})
-            to_be_removed.append(h)
-            values = [i,h, "HUMAN AND ROBOT", "COLLABORATIVE"]
-            
+    for i in task_list.items():
+        print(i)
+
+    val = capture("for each ofthe above task enter a list of values indicating 1 for collaborative and 0 for otherwise [1,2,2,]")
+    val = json.loads(val)
+    for  vals,tasks in zip(val,task_list.items()):
+        if vals == 1:
+            # colaborative.update({tasks[0]:task[1]})
+            to_be_removed.append(tasks[0])
+            print(tasks[1])
+            values = [tasks[1],tasks[0], "HUMAN AND ROBOT", "COLLABORATIVE"]
             result.loc[len(result)] = values
+    print(to_be_removed)
     for i in to_be_removed:
         del(task_list[i])
 
 
 def fifth_criteria(task_list):
-    robot_task = {}
-    human_task = {}
+    print("Function four *********************************************************************************")
     to_be_removed = []
-    for h,i in task_list.items():
-        time1 = float(capture(i + "Enter The estimated completion time t by human"))
-        time2 = float(capture(i + "Enter The estimated completion time t by robot"))
-        operatin_cost = capture(i + "The Level of operating costs  0(HIGH, MID and LOW)")
-        if operatin_cost == "HIGH":
+    for i in task_list.items():
+        print(i)
+    
+    
+    time_human = capture("for each of the task above enter time it takes for human to complete as a list")
+    time_robot = capture("for each of the task above enter time it takes for robot to complete as a list")
+    operating_cost = capture("for each of  the task enter  Enter the level of operating cost 3 HIGH, 2 MID, 1 LOW")
+    
+    
+    time_human = json.loads(time_human)
+    time_robot = json.loads(time_robot)
+    operating_cost = json.loads(operating_cost)
+    
+    for i,j,k,l in zip(time_human,time_robot,operating_cost,task_list.items()):
+        if k == 3 :
             o_c = 1
-        elif operatin_cost == "MID":
+        
+        elif k == 2:
             o_c = 0.5
-        elif operatin_cost == "LOW":
+        
+        elif k == 1:
             o_c = 0
-
-        if i in robot_can:
+        
+        if l[1] in robot_can:
             task_complexity = 0
         else:
             task_complexity = float("inf")
 
-        robot_cost = 0.1*task_complexity + 0.3 * (time2/60) + 0.6*o_c
-        human_cost = 0.1*task_complexity + 0.3 * (time1/60) + 0.6*o_c
+        robot_cost = 0.1*task_complexity + 0.3 * (j/60) + 0.6*o_c
+        
+        print(robot_cost)
+        
+        human_cost = 0.1*task_complexity + 0.3 * (i/60) + 0.6*o_c
+        print(human_cost)
         if human_cost >  robot_cost:
-            robot_task.update({h:i})
-            to_be_removed.append(h)
-            values = [i,h, "ROBOT", "LOWER COST FUNCTION"]
+#             robot_task.update({h:i})
+            to_be_removed.append(l[0])
+            values = [l[1],l[0], "ROBOT", "LOWER COST FUNCTION"]
             result.loc[len(result)] = values
         elif human_cost < robot_cost:
-            human_task.update({h:i})
-            to_be_removed.append(h)
-            values = [i,h, "HUMAN", "LOWER COST FUNCTION"]
+#             human_task.update({h:i})
+            to_be_removed.append(l[0])
+            values = [l[1],l[0], "HUMAN", "LOWER COST FUNCTION"]
             result.loc[len(result)] = values
     for i in to_be_removed:
         del(task_list[i])
+
 def sixth_criteria(task_list):
     robot_task = {}
     human_task ={}
@@ -260,4 +279,17 @@ def sixth_criteria(task_list):
             val = 1
     for i in to_be_removed:
         del(task_list[i])
-    
+def result_sorting(resultt, no_task):
+    resultt.set_index("Index", inplace =True)
+    resultt.sort_index(axis = 0, inplace = True)
+    if no_task ==  "1" or no_task == "2":
+        return result, " "
+    if no_task == "3":
+        num_inspect = [x for x in range(len(inspect))]
+        inspect_result = resultt.loc[result.index.isin(num_inspect)]
+        num_repair = [x for x in range(len(inspect), len(actions)+1)]
+        repair_result = resultt.loc[result.index.isin(num_repair)]
+        
+        return inspect_result, repair_result
+
+
