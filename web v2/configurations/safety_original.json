@@ -1,0 +1,34 @@
+{
+    "safe_tasks": [
+        "START OF INSPECTION JOB",
+        "REPORT STATUS OF [GAS CHECK] TO HUMAN",
+        "HUMAN GIVES AFFIRMATIVE REPLY",
+        "INSPECT STRUCTURAL WELDS",
+        "REVIEW CATHODIC POTENTIAL READINGS ",
+        "CHECK TANK ISOLATION",
+        "CHECK INSPECTION AREA",
+        "INSPECT APPURTENANCES"
+    ],
+    "safe_locations": [
+        "ACCESS WAYS ",
+        "CLIPS",
+        "LOWER TANK AREA",
+        "TANK OUTER SHELL PLATE"
+    ],
+    "unsafe_tasks": [
+        "GAS CHECK[TANK] ",
+        "CLIMB",
+        "INTERNAL VISUAL INSPECTION",
+        "INTERNAL ULTRASONIC THICKNESS TESTING",
+        "PENETRANT TESTING",
+        "SPARK TESTING",
+        "INTERNAL HAMMER TESTING",
+        "INTERNAL VACCUUM TESTING"
+    ],
+    "unsafe_locations": [
+        "STEAM LINE",
+        "PRODUCT LINE",
+        "ELECTRICAL POWER",
+        "FALLING OBJECT"
+    ]
+}
