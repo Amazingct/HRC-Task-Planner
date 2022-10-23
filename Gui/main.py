@@ -2,6 +2,7 @@ import inspect
 from tkinter import*
 from tkinter import ttk
 from tkinter import filedialog,messagebox
+from turtle import width
 import numpy as np
 import pandas as pd
 import criterion as cr
@@ -47,7 +48,7 @@ def homepage():
 
         actions_dict = {}
 
-        index = 23
+        index = 2
         if response == "INSPECTION":
             label = [None]*100
             label[1] = Label(second_frame, text = "Task to performed")
@@ -150,7 +151,7 @@ def second_proceed():
         height_human_e.grid(row =1, column = 2, pady = 4)
 #                 height_human_s = Button(root, text = "Enter")
 #                 height_human_s.grid(row =1, column = 3, pady = 4, padx = 2)
-        height_tank_l = Label(second_frame, text = "Enter height of Robot")
+        height_tank_l = Label(second_frame, text = "Enter height of Tank")
         height_tank_l.grid(row =2, column = 1, pady = 4)
         height_tank_e = Entry(second_frame)
         height_tank_e.grid(row =2, column = 2, pady = 4)
@@ -181,7 +182,7 @@ def fourth_proceed():
     label[1] = Label(second_frame, text = "For Each task enter Enter 1 for, Collaborative task and 0 for otherwise")
     label[1].grid(row = 1, column = 1, sticky=W)
     for i in range(len(actions_dict)):
-        var = StringVar(second_frame, "1")
+        var = StringVar(second_frame, "2")
         clicked.append(var)
         
     clicked =clicked[0:len(actions_dict)]
@@ -206,11 +207,17 @@ def fourth_proceed():
 def fifth_proceed():
     clear_window(second_frame)
     def get_values():
-        global ress
+        global ress,beta
+        beta = []
+
         ress = []
         for i,j,k in zip(human_times,robot_times,choice):
             ress.append([i.get(), j.get(), k.get()])
         print(ress)
+        for i in beta_values:
+            beta.append(i.get())
+            print(i.get())
+        
     label = [None]*100
     human_time = [None]*100
     human_times = []
@@ -218,11 +225,15 @@ def fifth_proceed():
     robot_times = []
     operating_cost = [None]*100
     operating_costs = []
+    beta_value = [None]*3
+    beta_values = []
+
     index = 2
     
     label[0] = Label( second_frame, text = "For each task enter time for human, time of robot and operating cost")
     label[0].grid(row = 0, column = 0)
     
+
     label[1] = Label(second_frame, text = "Task")
     label[1].grid(row = 1, column = 0)
     
@@ -234,6 +245,31 @@ def fifth_proceed():
     
     label[2] = Label(second_frame, text = "Level Operating Cost")
     label[2].grid(row = 1, column = 3, padx = 5)
+    
+    label[3] = Label(second_frame, text = " Enter Beta Values", wraplength=120)
+    label[3].grid(row = 1, column = 4, padx = 5)
+    
+    label[4] = Label(second_frame, text = "BetaT",justify="left")
+    label[4].grid(row = 2, column = 4, padx = 5, sticky = W)
+    beta_value[0] = Entry(second_frame, width = 10)
+    beta_values.append(beta_value[0])
+    beta_value[0].grid(row = 2, column = 5)
+    
+    label[5] = Label(second_frame, text = "BetaC",justify="left")
+    label[5].grid(row = 3, column = 4, padx = 5, sticky = W)
+    beta_value[1] = Entry(second_frame, width = 10)
+    beta_values.append(beta_value[1])
+    beta_value[1].grid(row = 3, column = 5)
+
+    label[5] = Label(second_frame, text = "BetaO",justify="left")
+    label[5].grid(row = 4, column = 4, padx = 5, sticky = W)
+    beta_value[2] = Entry(second_frame, width = 10)
+    beta_values.append(beta_value[2])
+    beta_value[2].grid(row = 4, column = 5)
+
+
+    
+
     costs = ["HIGH", "LOW", "MID"]
     choice = []
     for i in range(len(actions_dict)):
@@ -260,7 +296,7 @@ def fifth_proceed():
         index = index +1
         l = l + 1
         
-    Button(second_frame, text = "submit", command =lambda: [get_values(), cr.fifth_criteria(actions_dict,ress), sixth_proceed()]).grid(row = index, column = 2)
+    Button(second_frame, text = "submit", command =lambda: [get_values(), cr.fifth_criteria(actions_dict,ress, beta), sixth_proceed()]).grid(row = index, column = 2)
       
 
 def sixth_proceed():
@@ -277,10 +313,10 @@ def display_result(name_task):
     index = 2
     Label(second_frame, text = "Task").grid(row =1, column = 0)
     Label(second_frame, text = "Assigned_to").grid(row =1, column = 1)
-    Label(second_frame, text = "Reason").grid(row =1, column = 2)
+    Label(second_frame, text = "reason").grid(row =1, column = 2)
     if name_task ==  "INSPECTION":
         Label(second_frame, text= response+" TASKS").grid(row=0, column=0, sticky=W)
-        for i,j,k in zip(final_inspect["Task"], final_inspect["reason"],final_inspect["Assigned_to"]):
+        for i,j,k in zip(final_inspect["Task"], final_inspect["Assigned_to"],final_inspect["reason"]):
             Label(second_frame, text = i, wraplength=450, justify="left").grid(row=index, column=0, sticky=W)
             Label(second_frame, text = j,wraplength=300, justify="left").grid(row=index, column=1, sticky=W)
             Label(second_frame, text = k).grid(row=index, column=2, sticky=W)
@@ -289,7 +325,7 @@ def display_result(name_task):
         button = Button(second_frame, text="Download result", command= lambda:[cr.download_inspect(final_inspect),alert("inspect")]).grid(row = 3, column =4)
     if name_task == "REPAIR":
         Label(second_frame, text= response+" TASKS").grid(row=0, column=0, sticky=W)
-        for i,j,k in zip(final_repair["Task"], final_repair["reason"],final_repair["Assigned_to"]):
+        for i,j,k in zip(final_repair["Task"], final_repair["Assigned_to"],final_repair["reason"]):
             Label(second_frame, text = i, wraplength=450, justify="left").grid(row=index, column=0, sticky=W)
             Label(second_frame, text = j,wraplength=300, justify="left").grid(row=index, column=1, sticky=W)
             Label(second_frame, text = k).grid(row=index, column=2, sticky=W)
@@ -313,7 +349,7 @@ def display_result(name_task):
         Label(second_frame, text = "Reason").grid(row =index+1, column = 2)
         Label(second_frame, text="REPAIR TASKS").grid(row=index, column=1, sticky=W)
         col = index +2
-        for i,j,k in zip(final_repair["Task"], final_repair["reason"],final_repair["Assigned_to"]):
+        for i,j,k in zip(final_repair["Task"], final_repair["Assigned_to"],final_repair["reason"]):
             Label(second_frame, text = i, wraplength=450, justify="left").grid(row=col, column=0, sticky=W,padx= 10)
             Label(second_frame, text = j,wraplength=300, justify="left").grid(row=col, column=1, sticky=W, padx= 10)
             Label(second_frame, text = k).grid(row=col, column=2, sticky=W, padx= 10)
@@ -322,7 +358,7 @@ def display_result(name_task):
 
 root = Tk()
 
-root.geometry('1000x800')
+root.geometry('1150x800')
 
 main_frame = Frame(root)
 
@@ -342,13 +378,13 @@ my_canvas.configure(xscrollcommand = x_my_scrollbar.set)
 my_canvas.bind("<Configure>",lambda e:my_canvas.configure(scrollregion =my_canvas.bbox("all") ) )
 
 second_frame = Frame(my_canvas)
+root.title("HRC TASK PLANNER")
 
 my_canvas.create_window((0,0), window = second_frame, anchor ="nw")
 i =0
-Button(second_frame, text= "Upload Tasks file", command = openTasks).pack()
-Button(second_frame, text= "Upload Safety file", command = openSafety).pack()
-Button(second_frame, text = "Proceed", command = lambda: [cr.proceed(task, safety),clear_window(second_frame), homepage()]).pack(pady=5)
-Button(second_frame, text ="Skip", command=lambda :[default_file(),clear_window(second_frame), homepage()]).pack(pady=5)
-
+Button(second_frame, text= "Upload Tasks file", command = openTasks, width=15).pack(padx=525,pady=10)
+Button(second_frame, text= "Upload Safety file", command = openSafety, width=15).pack()
+Button(second_frame, text = "Proceed", command = lambda: [cr.proceed(task, safety),clear_window(second_frame), homepage()], width=15).pack(pady=5)
+Button(second_frame, text ="Skip", command=lambda :[default_file(),clear_window(second_frame), homepage()], width=15).pack()
 
 root.mainloop()

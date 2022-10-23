@@ -174,7 +174,7 @@ def fourth_criteria(task_list, res):
         
     
     
-def fifth_criteria(task_list,opt):
+def fifth_criteria(task_list,opt,bet):
     to_be_removed = []
     print("Function four *********************************************************************************")
     
@@ -193,7 +193,7 @@ def fifth_criteria(task_list,opt):
         else:
             task_complexity = float("inf")
 
-        robot_cost = 0.1*task_complexity + 0.3 * (float(i[1])/60) + 0.6*o_c
+        robot_cost = float(bet[0])*task_complexity + float(bet[1]) * (float(i[1])/60) + float(bet[2])*o_c
 
         print(robot_cost)
 
