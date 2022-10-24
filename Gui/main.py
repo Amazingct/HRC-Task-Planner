@@ -66,6 +66,7 @@ def homepage():
             print(len(actions_dict))
 
 
+
    
         elif response == "REPAIR":
             index = 2
@@ -104,6 +105,7 @@ def homepage():
             height_tank_s = Button(second_frame, text = "Proceed", command = lambda:[cr.first_criteria(actions_dict),second_proceed()]) 
             height_tank_s.grid(row =index, column = 1, pady = 4, padx = 2, sticky=W)
             print(len(actions_dict))
+            
 
     
     label = Label(second_frame, text= "Select Job to be performed")
@@ -211,12 +213,10 @@ def fifth_proceed():
         beta = []
 
         ress = []
-        for i,j,k in zip(human_times,robot_times,choice):
-            ress.append([i.get(), j.get(), k.get()])
+        for i,j,k,l,m,n in zip(human_times,robot_times,choice,betaT_values,betaC_values,betaO_values):
+            ress.append([i.get(), j.get(), k.get(), l.get(), m.get(), n.get()])
         print(ress)
-        for i in beta_values:
-            beta.append(i.get())
-            print(i.get())
+        
         
     label = [None]*100
     human_time = [None]*100
@@ -225,8 +225,13 @@ def fifth_proceed():
     robot_times = []
     operating_cost = [None]*100
     operating_costs = []
-    beta_value = [None]*3
-    beta_values = []
+    betaT_value = [None]*100
+    betaT_values = []
+    betaC_value = [None]*100
+    betaC_values = []
+    betaO_value = [None]*100
+    betaO_values = []
+    
 
     index = 2
     
@@ -246,26 +251,14 @@ def fifth_proceed():
     label[2] = Label(second_frame, text = "Level Operating Cost")
     label[2].grid(row = 1, column = 3, padx = 5)
     
-    label[3] = Label(second_frame, text = " Enter Beta Values", wraplength=120)
+    label[3] = Label(second_frame, text = "BetaT Values")
     label[3].grid(row = 1, column = 4, padx = 5)
-    
-    label[4] = Label(second_frame, text = "BetaT",justify="left")
-    label[4].grid(row = 2, column = 4, padx = 5, sticky = W)
-    beta_value[0] = Entry(second_frame, width = 10)
-    beta_values.append(beta_value[0])
-    beta_value[0].grid(row = 2, column = 5)
-    
-    label[5] = Label(second_frame, text = "BetaC",justify="left")
-    label[5].grid(row = 3, column = 4, padx = 5, sticky = W)
-    beta_value[1] = Entry(second_frame, width = 10)
-    beta_values.append(beta_value[1])
-    beta_value[1].grid(row = 3, column = 5)
 
-    label[5] = Label(second_frame, text = "BetaO",justify="left")
-    label[5].grid(row = 4, column = 4, padx = 5, sticky = W)
-    beta_value[2] = Entry(second_frame, width = 10)
-    beta_values.append(beta_value[2])
-    beta_value[2].grid(row = 4, column = 5)
+    label[4] = Label(second_frame, text = "BetaC Values")
+    label[4].grid(row = 1, column = 5, padx = 5)
+
+    label[5] = Label(second_frame, text = "BetaO Values")
+    label[5].grid(row = 1, column = 6, padx = 5)
 
 
     
@@ -292,11 +285,25 @@ def fifth_proceed():
         operating_cost[index].config(width = 5)
         operating_costs.append(operating_cost[index] )
         operating_cost[index].grid(row = index, column = 3 )
+        betaT_value[index] = Entry(second_frame, width = 10)
+        betaT_value.append(betaT_value[index] )
+        betaT_value[index].grid(row = index, column = 4 )
+        betaT_value[index] = Entry(second_frame, width = 10)
+        betaT_values.append(betaT_value[index] )
+        betaT_value[index].grid(row = index, column = 4 )
+        betaC_value[index] = Entry(second_frame, width = 10)
+        betaC_values.append(betaC_value[index] )
+        betaC_value[index].grid(row = index, column = 5 )
+        betaO_value[index] = Entry(second_frame, width = 10)
+        betaO_values.append(betaO_value[index] )
+        betaO_value[index].grid(row = index, column = 6 )
+
+
 
         index = index +1
         l = l + 1
         
-    Button(second_frame, text = "submit", command =lambda: [get_values(), cr.fifth_criteria(actions_dict,ress, beta), sixth_proceed()]).grid(row = index, column = 2)
+    Button(second_frame, text = "submit", command =lambda: [get_values(), cr.fifth_criteria(actions_dict,ress), sixth_proceed()]).grid(row = index, column = 2)
       
 
 def sixth_proceed():

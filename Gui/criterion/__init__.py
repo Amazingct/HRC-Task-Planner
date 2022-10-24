@@ -29,96 +29,130 @@ def proceed(task, safety):
     safe_locations = []
     for x in task.loc["repair"]:
         if x is not np.nan:
+            if type(x) == str:
             # print(x)
-            repair.append(x)
+                repair.append(x)
     
     for x in task.loc["inspect"]:
         if x is not np.nan:
+            if type(x) == str:
+
 #             print(x)
-            inspect.append(x)
+                inspect.append(x)
     
     for x in task.loc["for_human"]:
         if x is not np.nan:
+            if type(x) == str:
 #             print(x)
-            for_human.append(x)
+                for_human.append(x)
     for x in task.loc["robot_can"]:
         if x is not np.nan:
+            if type(x) == str:
 #             print(x)
-            robot_can.append(x)
+                robot_can.append(x)
     for x in safety.loc["safe_locations"]:
         if x is not np.nan:
+            if type(x) == str:
 #             print(x)
-            safe_locations.append(x)
+
+                safe_locations.append(x)
             
     for x in safety.loc["unsafe_tasks"]:
         if x is not np.nan:
+            if type(x) == str:
 #             print(x)
-            unsafe_tasks.append(x)
+                unsafe_tasks.append(x)
     
     for x in safety.loc["safe_tasks"]:
         if x is not np.nan:
+            if type(x) == str:
             # print(x)
-            safe_tasks.append(x)
+                safe_tasks.append(x)
 
     for x in safety.loc["unsafe_locations"]:
         if x is not np.nan:
+            if type(x) == str:
 #             print(x)
-            unsafe_locations.append(x)
+                unsafe_locations.append(x)
 
     
 
 safe = {}
 robot_task = {}
 def first_criteria(task_list):
+
     to_be_removed =[]
+    for h,i in task_list.items():
+        for x in unsafe_tasks:
+            if x in i:
+                robot_task.update({h:i})
+                if h not in to_be_removed:
+                    to_be_removed.append(h)
+                    values = [i,h, "ROBOT", "UNSAFE"]
+                    result.loc[len(result)] = values
+        
+    for h,i in task_list.items():
+        for x in unsafe_locations:
+            if x in i:
+                robot_task.update({h:i})
+                if h not in to_be_removed:
+                    to_be_removed.append(h)
+                    values = [i,h, "ROBOT", "UNSAFE"]
+                    result.loc[len(result)] = values
+    for i in to_be_removed:    
+        del[task_list[i]]
+    to_be_removed = []
+    print(result)
+        
+        
+
        #SAFE
-    for h,i in task_list.items(): 
-        for x in safe_tasks:
-            if x in i:
-                for j in safe_locations:
-                    if j in i:
-                        safe.update({h:i})
+#     for h,i in task_list.items(): 
+#         for x in safe_tasks:
+#             if x in i:
+#                 for j in safe_locations:
+#                     if j in i:
+#                         safe.update({h:i})
+# #                         print(i)
+# #Unsafe1
+#     for  h,i in task_list.items(): 
+#         for x in safe_tasks:
+#             if x in i:
+#                 for j in unsafe_locations :
+#                     if j in i and h not in to_be_removed:
 #                         print(i)
-#Unsafe1
-    for  h,i in task_list.items(): 
-        for x in safe_tasks:
-            if x in i:
-                for j in unsafe_locations :
-                    if j in i and h not in to_be_removed:
-                        print(i)
-                        robot_task.update({h:i})
-                        to_be_removed.append(h)
-                        values = [i,h, "ROBOT", "UNSAFE"]
-                        result.loc[len(result)] = values
-#                         task_list.remove(i)
-#Unsafe2
-    for  h,i in task_list.items(): 
-        for x in unsafe_tasks:
-            if x in str(i):
-                for j in safe_locations :
-                    if j in  str(i) and i not in robot_task:
-                        print(i)
-                        robot_task.update({h:i})
-                        to_be_removed.append(h)
-                        values = [i,h, "ROBOT", "UNSAFE"]
-                        result.loc[len(result)] = values
-#                         task_list.remove(i)
-#Unsafe3
-    for  h,i in task_list.items(): 
-        for x in unsafe_tasks:
-            if x in i:
-                for j in unsafe_locations :
-                    if j in i and i not in robot_task:
-                        print(i)
-                        robot_task.update({h:i})
-                        to_be_removed.append(h)
-                        values = [i,h ,"ROBOT", "UNSAFE"]
-                        result.loc[len(result)] = values
-#                         task_list.remove(i)
-    # print(to_be_removed)
-    for i in to_be_removed:
-        del(task_list[i])
-    # second_criteria(actions_dict)
+#                         robot_task.update({h:i})
+#                         to_be_removed.append(h)
+#                         values = [i,h, "ROBOT", "UNSAFE"]
+#                         result.loc[len(result)] = values
+# #                         task_list.remove(i)
+# #Unsafe2
+#     for  h,i in task_list.items(): 
+#         for x in unsafe_tasks:
+#             if x in str(i):
+#                 for j in safe_locations :
+#                     if j in  str(i) and i not in robot_task:
+#                         print(i)
+#                         robot_task.update({h:i})
+#                         to_be_removed.append(h)
+#                         values = [i,h, "ROBOT", "UNSAFE"]
+#                         result.loc[len(result)] = values
+# #                         task_list.remove(i)
+# #Unsafe3
+#     for  h,i in task_list.items(): 
+#         for x in unsafe_tasks:
+#             if x in i:
+#                 for j in unsafe_locations :
+#                     if j in i and i not in robot_task:
+#                         print(i)
+#                         robot_task.update({h:i})
+#                         to_be_removed.append(h)
+#                         values = [i,h ,"ROBOT", "UNSAFE"]
+#                         result.loc[len(result)] = values
+# #                         task_list.remove(i)
+#     # print(to_be_removed)
+
+
 
 def pre_second_criteria(task_list):
     condition = False
@@ -136,7 +170,7 @@ def second_criteria(task_list,height_human,height_tank ):
 #                 colaborative.update({h:i})
                 to_be_removed.append(h)
                 print(to_be_removed)
-                string = "FROM "+ height_human + " DOWN, ASSIGNED TO HUMAN " + " FROM " + height_tank + " TO " +  height_human + " ASSIGNED TO HUMAN "
+                string = "FROM "+ height_human + " DOWN, ASSIGNED TO HUMAN " + " FROM " + height_tank + " TO " +  height_human + " ASSIGNED TO ROBOT"
                 values = [i, h, "HUMAN AND ROBOT", string]
 
                 result.loc[len(result)] = values
@@ -174,7 +208,7 @@ def fourth_criteria(task_list, res):
         
     
     
-def fifth_criteria(task_list,opt,bet):
+def fifth_criteria(task_list,opt):
     to_be_removed = []
     print("Function four *********************************************************************************")
     
@@ -193,11 +227,11 @@ def fifth_criteria(task_list,opt,bet):
         else:
             task_complexity = float("inf")
 
-        robot_cost = float(bet[0])*task_complexity + float(bet[1]) * (float(i[1])/60) + float(bet[2])*o_c
+        robot_cost = float(i[3])*task_complexity + float(i[4]) * (float(i[1])/60) + float(i[5])*o_c
 
         print(robot_cost)
 
-        human_cost = 0.1*task_complexity + 0.3 * (float(i[0])/60) + 0.6*o_c
+        human_cost = float(i[3])*task_complexity + float(i[4]) * (float(i[0])/60) + float(i[5])*o_c
 
         print(human_cost)
 
